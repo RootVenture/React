@@ -4,6 +4,7 @@ import Order from './Order';
 import Inventory from './Inventory';
 import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
+import base from '../base';
 
 class App extends React.Component {
   // define state
@@ -19,6 +20,21 @@ class App extends React.Component {
       fishes: {},
       order: {}
     };
+  }
+
+  // will render this Component only once even if state changes
+  componentWillMount() {
+    // must point to the part of the firebase we want to sync with
+    this.ref = base.syncState(`${this.props.params.storeId}/fishes`,
+      {
+        context: this,
+        state: 'fishes'
+      })
+  }
+
+  // stop syncing when we go to another page
+  componentWillUnmount() {
+    base.removeBinding(this.ref);
   }
 
   addFish(fish) {

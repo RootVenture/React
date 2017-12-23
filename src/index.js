@@ -5,7 +5,7 @@ import { BrowserRouter, Match, Miss } from 'react-router';
 
 import './css/style.css';
 import StorePicker from './components/StorePicker';
-import App from "./components/app";
+import App from "./components/App";
 import NotFound from "./components/NotFound";
 
 // Use React Router

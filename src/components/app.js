@@ -22,6 +22,7 @@ class App extends React.Component {
     };
   }
 
+  // This runs right before <App> is rendered
   // will render this Component only once even if state changes
   componentWillMount() {
     // must point to the part of the firebase we want to sync with
@@ -30,11 +31,28 @@ class App extends React.Component {
         context: this,
         state: 'fishes'
       })
+
+    // Check if there is any orer in localStorage
+    const localStorageRef = localStorage.getItem(`order-${this.props.params.storeId}`);
+    if (localStorageRef) {
+      // Update our App componenets order state
+      this.setState({
+        order: JSON.parse(localStorageRef)
+      })
+    }
   }
 
   // stop syncing when we go to another page
   componentWillUnmount() {
     base.removeBinding(this.ref);
+  }
+
+  // invoked immediately before props or state changes
+  // working with local storage, which is tied to local host domain
+  componentWillUpdate(nextProps, nextState) {
+    // storeId is a props within our App
+    // passing in our order state; note that localStorage can only take in primitives (No objects)
+    localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order))
   }
 
   addFish(fish) {
@@ -76,7 +94,7 @@ class App extends React.Component {
             }
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order} />
+        <Order fishes={this.state.fishes} order={this.state.order} params={this.props.params} />
         <Inventory addFish={this.addFish} loadSamples={this.loadSamples} />
       </div>
     )

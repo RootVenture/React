@@ -22,10 +22,10 @@ class App extends React.Component {
     };
   }
 
-  // This runs right before <App> is rendered
+
   // will render this Component only once even if state changes
   componentWillMount() {
-    // must point to the part of the firebase we want to sync with
+    // This runs right before <App> is rendered, points to the part of the firebase we sync
     this.ref = base.syncState(`${this.props.params.storeId}/fishes`,
       {
         context: this,
@@ -47,10 +47,9 @@ class App extends React.Component {
     base.removeBinding(this.ref);
   }
 
-  // invoked immediately before props or state changes
+  // invoked immediately before rendering when new props or state are received (changed)
   // working with local storage, which is tied to local host domain
   componentWillUpdate(nextProps, nextState) {
-    // storeId is a props within our App
     // passing in our order state; note that localStorage can only take in primitives (No objects)
     localStorage.setItem(`order-${this.props.params.storeId}`, JSON.stringify(nextState.order))
   }
@@ -81,6 +80,7 @@ class App extends React.Component {
   }
 
   // all Components must have unique tags, can use 'key' attribute to make Fish Components unique
+  // pass through props via attributes
   render() {
     return (
       <div className="catch-of-the-day">

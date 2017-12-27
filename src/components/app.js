@@ -15,7 +15,9 @@ class App extends React.Component {
     this.addFish = this.addFish.bind(this);
     this.loadSamples = this.loadSamples.bind(this);
     this.addToOrder = this.addToOrder.bind(this);
+    this.removeFromOrder = this.removeFromOrder.bind(this);
     this.updateFish = this.updateFish.bind(this);
+    this.removeFish = this.removeFish.bind(this);
     // getinitialState
     this.state = {
       fishes: {},
@@ -71,7 +73,13 @@ class App extends React.Component {
     // perform update
     fishes[key] = updatedFish;
     // update state with our copy
-    this.setState({ fishes })
+    this.setState({ fishes });
+  }
+
+  removeFish(key) {
+    const fishes = { ...this.state.fishes };
+    fishes[key] = null;
+    this.setState({ fishes });
   }
 
   loadSamples() {
@@ -89,6 +97,11 @@ class App extends React.Component {
     this.setState({ order })
   }
 
+  removeFromOrder(fishKey) {
+    const order = { ...this.state.order };
+    delete order[fishKey];
+    this.setState({ order })
+  }
   // all Components must have unique tags, can use 'key' attribute to make Fish Components unique
   // pass through props via attributes
   render() {
@@ -107,12 +120,14 @@ class App extends React.Component {
         <Order
           fishes={this.state.fishes}
           order={this.state.order}
-          params={this.props.params} />
+          params={this.props.params}
+          removeFromOrder={this.removeFromOrder} />
         <Inventory
           fishes={this.state.fishes}
           addFish={this.addFish}
           loadSamples={this.loadSamples}
-          updateFish={this.updateFish} />
+          updateFish={this.updateFish}
+          removeFish={this.removeFish} />
       </div>
     )
   }

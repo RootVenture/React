@@ -11,7 +11,7 @@ class Order extends React.Component {
   renderOrder(key) {
     const fish = this.props.fishes[key];
     const count = this.props.order[key];
-    const removeButton = <button onClick={() => this.props.removeFromOrder(key)}>&times;</button>
+    const removeButton = <button onClick={() => this.props.c(key)}>&times;</button>
 
     if (!fish || fish.status === 'unavailable') {
       return <li key={key}>Sorry, {fish ? fish.name : 'fish'} is no longer available!{removeButton}</li>
@@ -69,6 +69,12 @@ class Order extends React.Component {
       </div>
     )
   }
+}
+
+Order.propTypes = {
+  fishes: React.PropTypes.object.isRequired,
+  order: React.PropTypes.object.isRequired,
+  removeFromOrder: React.PropTypes.func.isRequired,
 }
 
 export default Order;
